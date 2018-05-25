@@ -29,4 +29,5 @@ cache:
     - $HOME/miniconda
     - $HOME/.cache/Tectonic
 script:
+ - cd 1-Pflichtenheft/
  - tectonic ./pflichtenheft.tex --print

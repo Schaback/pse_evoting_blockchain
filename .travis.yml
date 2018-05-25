@@ -1,33 +1,24 @@
-
-
 notifications:
   email: false
 install:
-  # Silent install from conda docs
-  # https://conda.io/docs/user-guide/install/macos.html#install-macos-silent
-  # adapted using
-  # https://conda.io/docs/user-guide/tasks/use-conda-with-travis-ci.html
-
-  # Needed to check if conda already installed
-  - export PATH="$HOME/miniconda/bin:$PATH"
-
-  # If not yet installed, obtain Miniconda
-  # and tectonic
-  # From tectonic docs
-  # https://tectonic-typesetting.github.io/en-US/install.html#the-anaconda-method
-  - if ! command -v conda > /dev/null; then
-      wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
-      bash miniconda.sh -b -p $HOME/miniconda -u;
-      conda config --add channels conda-forge;
-      conda config --set always_yes yes;
-      conda update --all;
-      conda install tectonic;
-    fi
-  - conda info -a
+- export PATH="$HOME/miniconda/bin:$PATH"
+- if ! command -v conda > /dev/null; then wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+  -O miniconda.sh; bash miniconda.sh -b -p $HOME/miniconda -u; conda config --add
+  channels conda-forge; conda config --set always_yes yes; conda update --all; conda
+  install tectonic; fi
+- conda info -a
 cache:
   directories:
-    - $HOME/miniconda
-    - $HOME/.cache/Tectonic
+  - "$HOME/miniconda"
+  - "$HOME/.cache/Tectonic"
 script:
- - cd 1-Pflichtenheft/
- - tectonic ./pflichtenheft.tex --print
+- cd 1-Pflichtenheft/
+- tectonic ./pflichtenheft.tex --print
+deploy:
+  provider: releases
+  api_key:
+    secure: Hhbd0A/CGdrNuYK4+gbergTR/xPyUw30XNYkdQ0M39v1e1IrnKXQhdLiTMwBRvNI8O9VwnfXXbzjbpogX++DvKbXOBzg+uAtml/8/1IqmVY6p1enXqmAv6zjv7N97J0Diy6vAZS1Qf8EDOb16pOtnRRmO1T0GBkzfwsQ634hI+hbMvSjODOD1rCGo8VXH4A7uG5zpJf2erMWNkv+15eqrVaVojhqHZ5MrAgZJDHo/682b3sKkJLpu5A2ix0rD3vzdbO2/Lb+46jVgNhghbr/KceHadnftMpnnhukTHqw4QXgLYiJAsCERbiuv4+GP1LHveKj+rwOAG9j1Klo177KG8aFhJnTIdG/nLs0lNLeNE53iLkct5FjXX1FG3ABwG2NCHf4xGdyPxhfN7MLksXJTsCryIOvjBEzsiF01AMkV3pelsiaHSBzqskUnT+y176PcB54zlHcuSURcZ0Sjoy9vrN42OWVXx1wy4fV/NM2PDfG721OkxdNhGxlcDMLqj+b1D4INJAersqQNVjqykq943ooU+zGTf69KQzsX1IKfvYCprROGKM+JXvpaUbR2XDPdTurni8LOvxOZMwu1K3vDVH7VwrZ8v8LuQhIFXCyj/BdjwSRBhAXJmBAYJWzKKnhCOFUsjiAHB1QmsDUkQVwyZyykAao72uXYoGKjc7w0jc=
+  file: pflichtenheft.pdf
+  on:
+    repo: Schaback/pse_evoting_blockchain
+
